@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <?!= include('displayCSS'); ?>
+  <base target="_top">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+  <script>
+//CHAMAR LISTA DE NOMES DOS COLABORADORES PARA DROPDOWN - TELA DE LOGIN
+  (function (){
+  google.script.run.withSuccessHandler(
+    function (selectList) {
+      let select = document.getElementById("mySelectList");
+      for( let i=0; i<selectList.length; i++ ) {
+        let option = document.createElement("option");
+        option.text = selectList[i][0];
+        select.add(option);
+      }
+    }
+  ).getSelectList();
+  }());
+
+//CHAMAR LISTA DE NOMES DOS COLABORADORES PARA DROPDOWN - TELA DE ALTERAÇÃO DE REGISTOS
+  (function (){
+  google.script.run.withSuccessHandler(
+    function (selectList) {
+      let select = document.getElementById("idListaColabsPorFabrica");
+      for( let i=0; i<selectList.length; i++ ) {
+        let option = document.createElement("option");
+        option.text = selectList[i][0];
+        select.add(option);
+      }
+    }
+  ).fListaColabsPorFabrica();
+  }());
+
+//CHAMAR LISTA DE FÁBRICAS PARA DROPDOWN - TELA DE REGISTOS
+  (function () {
+  google.script.run.withSuccessHandler(
+    function (selectList) {
+      let select = document.getElementById("listaFabricas");
+      for( let i=0; i<selectList.length; i++ ) {
+        let option = document.createElement("option");
+        option.text = selectList[i][0];
+        select.add(option);
+      }
+    }
+  ).chamarListaFabricas();
+  }());
+
+//VALIDAR LOGIN DO USUÁRIO
+  function loginUser(){
+  let e = document.getElementById("mySelectList");
+  let username = e.options[e.selectedIndex].text;
+  let password = document.getElementById('senha').value;
+
+    google.script.run.withSuccessHandler(function(output){
+      if(output == 'TRUE'){
+        document.getElementById('loginDisplay').style.display = 'none'
+        document.getElementById('dataDisplay').style.display = 'block'
+        document.getElementById('edicaoDisplay').style.display = 'none'
+      }else if(output == 'FALSE'){
+        document.getElementById("senha").value = ""
+        $('#errorMessage').html('Senha incorreta. Por favor, tente novamente.')
+      }
+    }).checkLogin(username,password)
+  }
+
+//VALIDAR LOGIN PARA TELA DE ALTERAÇÃO DE REGISTOS
+  function fTelaEdicaoRegistos(){
+  let e = document.getElementById("mySelectList");
+  let username = e.options[e.selectedIndex].text;
+  let password = document.getElementById('senha').value;
+
+    google.script.run.withSuccessHandler(function(output){
+      if(output == 'TRUE'){
+        document.getElementById('loginDisplay').style.display = 'none'
+        document.getElementById('dataDisplay').style.display = 'none'
+        document.getElementById('edicaoDisplay').style.display = 'block'
+      }else if(output == 'PROIBIDO'){
+        document.getElementById("senha").value = ""
+        $('#errorMessage').html('Você não tem autorização para acessar esta área. Por favor, informe a senha novamente e clique em Novos Registos.')        
+      }else if(output == 'FALSE'){
+        document.getElementById("senha").value = ""
+        $('#errorMessage').html('Senha incorreta. Por favor, tente novamente.')
+      }
+    }).checkLoginEdicao(username,password)
+  }
+
+
+
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//MOSTRAR HISTÓRICO DE REGISTOS DA BASE DE DADOS --- AINDA FALTAAAAAAAAAAAAA
+function decidirnome(){ //SKDFJSGNSLKMGPJGPMGDºFGPEJGNKFMGºDFGK+DOFGJFD
+
+  google.script.run.withSuccessHandler(function(output){
+
+    document.getElementById("elements").innerHTML = output
+
+  }).mostrarRegistros()
+}
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+//REGISTAR INFORMAÇÃO DO DIA
+  function addRow(){
+  let regData = new Date().toLocaleDateString()                     //dia registado
+  let e = document.getElementById("mySelectList");                  
+  let regColaborador = e.options[e.selectedIndex].text;             //nome colaborador
+  let f = document.getElementById("listaFabricas");                  
+  let regFabrica = f.options[f.selectedIndex].text;                 //fábrica
+  let regFeriado = $('input[name="feriadoR"]:checked').val()        //informar se é feriado ou não
+  let regAusencia = document.getElementById('motAusencia').value    //motivo ausencia, se houver
+  let regEntrada = document.getElementById('entrada').value         //hora entrada
+  let regSaida = document.getElementById('saida').value             //hora saida
+  let regIntervalo = document.getElementById('intervalo').value     //tempo de intervalo
+  let regUndKgcomPonto = document.getElementById('vUnidadeKg').value
+  let regUndKg = regUndKgcomPonto.replace(".", ",")
+  let regLocalizador = regData+regColaborador
+
+  //validar Localizador
+  google.script.run.withSuccessHandler(function(output){
+    if(output == 'TRUE'){
+      document.getElementById("msgRegisto").style.color = 'red';
+      document.getElementById("msgRegisto").innerHTML = 'As informações desta data já haviam sido registadas.'
+
+    }else if(output == 'FALSE'){
+      //validar preenchimento fábrica
+      if(regFabrica==''){
+        document.getElementById("msgRegisto").innerHTML = 'É necessário selecionar a fábrica.'
+
+      //validar preenchimento horários
+      }else if($('#telaHorarios').is(':visible') && (regEntrada=="00:00" || regSaida=="00:00")){
+        document.getElementById("msgRegisto").innerHTML = 'É necessário preencher horários de entrada, saída e intervalo do dia trabalhado.'
+
+      //validar preenchimento motido ausência   
+      }else if($('#telaAusencia').is(':visible') && regAusencia==''){
+        document.getElementById("msgRegisto").innerHTML = 'É necessário preencher o motivo da ausência.'
+
+      //validar preenchimento de valor de unidades ou kilogramas  
+      }else if($('#telaUnidadeKg').is(':visible') && (regUndKg=='' || regUndKg==0)){
+        document.getElementById("msgRegisto").innerHTML = 'É necessário preencher as unidades ou kilogramas.'
+
+      //efetuar registo de dados na data de hoje     
+      }else{
+        google.script.run.addRecord(regData,regColaborador,regFabrica,regFeriado,regAusencia,regEntrada,regSaida,regIntervalo,regUndKg,regLocalizador)
+      
+        document.getElementById("msgRegisto").style.color = 'green';
+        document.getElementById("msgRegisto").innerHTML = `Registo da data ${regData} efetuado com sucesso!`
+        }
+      }
+    }).verificarLocalizador(regLocalizador)
+
+    //aguardar 2 segundos para chamar função de "Sumir com msg de confirmação"
+    setTimeout(textoInnerVazio, 6000);
+  }
+
+  function textoInnerVazio() {
+      document.getElementById("msgRegisto").innerHTML = "";
+  }
+
+//MOSTRAR OU OCULTAR TELAS "AUSÊNCIA" E "HORAS TRABALHADAS" no displayRegisto
+  function alternarTelas(x){
+    if(x==0){
+      document.getElementById("rdDiaTrabalhado").checked = true
+      document.getElementById("rdMotivoAusencia").checked = false
+      document.getElementById("rdUnidadeKg").checked = false
+      document.getElementById("telaHorarios").style.display = 'block'
+      document.getElementById("telaAusencia").style.display = 'none'
+      document.getElementById("telaUnidadeKg").style.display = 'none'
+    }else if(x==1){
+      document.getElementById("rdDiaTrabalhado").checked = false
+      document.getElementById("rdMotivoAusencia").checked = true
+      document.getElementById("rdUnidadeKg").checked = false
+      document.getElementById("telaHorarios").style.display = 'none'
+      document.getElementById("telaAusencia").style.display = 'block'
+      document.getElementById("telaUnidadeKg").style.display = 'none'
+    }else if(x==2){
+      document.getElementById("rdDiaTrabalhado").checked = false
+      document.getElementById("rdMotivoAusencia").checked = false
+      document.getElementById("rdUnidadeKg").checked = true
+      document.getElementById("telaHorarios").style.display = 'none'
+      document.getElementById("telaAusencia").style.display = 'none'
+      document.getElementById("telaUnidadeKg").style.display = 'block'
+    }
+    return
+  }
+
+  </script>
+
+<body>
+<!--Chamar CDN Google para jQuery-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
+<!--TELA DE LOGIN----------------------->
+<div id="loginDisplay">
+  <h1>LOGIN</h1>
+  <p>Por favor, informe seu nome e senha.</p>
+    <select id="mySelectList"></select> <br>                                 <!--lista dropdown colaboradores-->
+    <input type="password" id="senha" onkeydown = "if (event.keyCode == 13)
+        document.getElementById('btLogin').click()" /> <br>   <!--executar botao com tecla Enter-->                 
+    <span id="errorMessage" style="color: red" ></span> <br>                 <!--msg de erro senha incorreta-->
+
+    <input type="button" id='btLogin' value="Novos Registos" onclick="loginUser()" /> 
+    <input type="button" id='btEditar' value="Editar Registos" onclick="fTelaEdicaoRegistos()" />
+</div>
+
+
+<!--TELA DE VISUALIZAÇÃO E ALTERAÇÃO DE REGISTOS----------------------->
+<div style="display:none"  id="edicaoDisplay">
+  <h1>VISUALIZAÇÃO E ALTERAÇÃO DE REGISTO</h1>
+  <p>Por favor, selecione a data e o colaborador cujo registo deseja visualizar e alterar.</p>  <br>
+
+  <select id="idListaColabsPorFabrica"></select> <br>
+  
+  <label for="dataAlterar">Data: </label>
+  <input type="date" id="dataAlterar"> <br>
+  
+
+  <input type="button" id='btPesquisar' value="Pesquisar" onclick="xx()" /> 
+  
+  
+<!--XXXXXXXXXXXXXXXXXX esse aqui vai ser pra puxar BD do mês inteiro  <p id="elements">Tela Alteração</p>    -->
+</div>
+
+
+<!--TELA DE REGISTO INÍCIO----------------------->
+<div style="display:none"  id="dataDisplay">
+  <h1>REGISTO DE HORAS</h1>
+  <p>Por favor, preencha o formulário abaixo com as informações de hoje.</p>
+
+  <label>DATA REGISTO: <script> document.write(new Date().toLocaleDateString()); </script> </label> <br>
+
+  <p>Este dia é feriado? 
+    <input type="radio"  name="feriadoR" value="Sim">Sim
+    <input type="radio"  name="feriadoR" value="Não" checked='checked' >Não
+  </p>
+
+  <label>FÁBRICA: </label>
+    <select id="listaFabricas"></select>
+  
+  <p>O que ocorreu neste dia:</p>
+    <input type="radio" id="rdDiaTrabalhado" name="radioS" onclick="alternarTelas(0)" >Dia trabalhado
+    <input type="radio" id="rdMotivoAusencia" name="radioS" onclick="alternarTelas(1)" >Ausência
+    <input type="radio" id="rdUnidadeKg" name="radioS" onclick="alternarTelas(2)" >Unidade ou Kg
+  <br>
+  <br>
+
+<!--TELA DE REGISTO HORÁRIOS----------------------->
+  <div style="display:none" id="telaHorarios" >
+    <label>HORÁRIO DE ENTRADA</label>
+      <input type="time" id="entrada" value="00:00"
+      min="00:00" max="23:59" required>
+    <br>
+    <label>HORÁRIO DE SAÍDA</label>
+      <input type="time" id="saida" value="00:00"
+      min="00:00" max="23:59" required>
+    <br> 
+    <label>TEMPO DE INTERVALO</label>
+      <input type="time" id="intervalo" value="00:00"
+      min="00:00" max="23:59" required>
+    <br>
+    <input type="button" value="Confirmar" onclick="addRow()" />
+  </div>
+
+<!--TELA DE REGISTO AUSÊNCIA----------------------->
+  <div style="display:none" id="telaAusencia" >
+    <label>MOTIVO AUSÊNCIA: </label>
+      <input list="listaMotivoAusencia" id="motAusencia"/>
+      <datalist id="listaMotivoAusencia">
+          <option value="Falta">
+          <option value="Baixa Médica">
+          <option value="Baixa Seguro">
+          <option value="Férias">
+          <option value="Feriado">
+          <option value="Luto">
+          <option value="Paternidade">
+          <option value="Maternidade">
+          <option value="Isolamento Profilático">
+      </datalist>
+      <br>
+      <input type="button" value="Confirmar" onclick="addRow()" />
+  </div>
+
+<!--TELA DE REGISTO UNIDADE E KILOGRAMA----------------------->
+  <div style="display:none" id="telaUnidadeKg" >
+    <label>UNIDADE OU KILOGRAMA: </label>
+      <input type="number" id="vUnidadeKg" min="0" required> <br>
+
+    <input type="button" value="Confirmar" onclick="addRow()" />
+  </div>
+
+  <span id="msgRegisto" style="color:red" ></span>
+
+</div>
+  
+</body>
+</html>
