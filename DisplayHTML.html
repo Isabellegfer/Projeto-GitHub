@@ -6,8 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
-  <script>
-//CHAMAR LISTA DE NOMES DOS COLABORADORES PARA DROPDOWN - TELA DE LOGIN
+<script>
+  
+//TELA LOGIN ------------------------------------------------------------------------------
+//CHAMAR LISTA DE NOMES DOS COLABORADORES PARA DROPDOWN
   (function (){
   google.script.run.withSuccessHandler(
     function (selectList) {
@@ -19,34 +21,6 @@
       }
     }
   ).getSelectList();
-  }());
-
-//CHAMAR LISTA DE NOMES DOS COLABORADORES PARA DROPDOWN - TELA DE ALTERAÇÃO DE REGISTOS
-  (function (){
-  google.script.run.withSuccessHandler(
-    function (selectList) {
-      let select = document.getElementById("idListaColabsPorFabrica");
-      for( let i=0; i<selectList.length; i++ ) {
-        let option = document.createElement("option");
-        option.text = selectList[i][0];
-        select.add(option);
-      }
-    }
-  ).fListaColabsPorFabrica();
-  }());
-
-//CHAMAR LISTA DE FÁBRICAS PARA DROPDOWN - TELA DE REGISTOS
-  (function () {
-  google.script.run.withSuccessHandler(
-    function (selectList) {
-      let select = document.getElementById("listaFabricas");
-      for( let i=0; i<selectList.length; i++ ) {
-        let option = document.createElement("option");
-        option.text = selectList[i][0];
-        select.add(option);
-      }
-    }
-  ).chamarListaFabricas();
   }());
 
 //VALIDAR LOGIN DO USUÁRIO
@@ -67,28 +41,6 @@
     }).checkLogin(username,password)
   }
 
-//VALIDAR LOGIN PARA TELA DE ALTERAÇÃO DE REGISTOS
-  function fTelaEdicaoRegistos(){
-  let e = document.getElementById("mySelectList");
-  let username = e.options[e.selectedIndex].text;
-  let password = document.getElementById('senha').value;
-
-    google.script.run.withSuccessHandler(function(output){
-      if(output == 'TRUE'){
-        document.getElementById('loginDisplay').style.display = 'none'
-        document.getElementById('dataDisplay').style.display = 'none'
-        document.getElementById('edicaoDisplay').style.display = 'block'
-      }else if(output == 'PROIBIDO'){
-        document.getElementById("senha").value = ""
-        $('#errorMessage').html('Você não tem autorização para acessar esta área. Por favor, informe a senha novamente e clique em Novos Registos.')        
-      }else if(output == 'FALSE'){
-        document.getElementById("senha").value = ""
-        $('#errorMessage').html('Senha incorreta. Por favor, tente novamente.')
-      }
-    }).checkLoginEdicao(username,password)
-  }
-
-
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //MOSTRAR HISTÓRICO DE REGISTOS DA BASE DE DADOS --- AINDA FALTAAAAAAAAAAAAA
@@ -101,6 +53,22 @@ function decidirnome(){ //SKDFJSGNSLKMGPJGPMGDºFGPEJGNKFMGºDFGK+DOFGJFD
   }).mostrarRegistros()
 }
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+
+//TELA REGISTO------------------------------------------------------------------------------------------
+//CHAMAR LISTA DE FÁBRICAS PARA DROPDOWN - TELA DE REGISTOS
+  (function () {
+  google.script.run.withSuccessHandler(
+    function (selectList) {
+      let select = document.getElementById("listaFabricas");
+      for( let i=0; i<selectList.length; i++ ) {
+        let option = document.createElement("option");
+        option.text = selectList[i][0];
+        select.add(option);
+      }
+    }
+  ).chamarListaFabricas();
+  }());
 
 //REGISTAR INFORMAÇÃO DO DIA
   function addRow(){
@@ -186,7 +154,70 @@ function decidirnome(){ //SKDFJSGNSLKMGPJGPMGDºFGPEJGNKFMGºDFGK+DOFGJFD
     return
   }
 
-  </script>
+
+//TELA ALTERAÇÃO---------------------------------------------------------------------------------
+//CHAMAR LISTA DE NOMES DOS COLABORADORES PARA DROPDOWN - TELA DE ALTERAÇÃO DE REGISTOS
+  (function (){
+  google.script.run.withSuccessHandler(
+    function (selectList) {
+      let select = document.getElementById("idListaColabsPorFabrica");
+      for( let i=0; i<selectList.length; i++ ) {
+        let option = document.createElement("option");
+        option.text = selectList[i][0];
+        select.add(option);
+      }
+    }
+  ).fListaColabsPorFabrica();
+  }());
+
+//VALIDAR LOGIN PARA TELA DE ALTERAÇÃO DE REGISTOS
+  function fTelaEdicaoRegistos(){
+  let e = document.getElementById("mySelectList");
+  let username = e.options[e.selectedIndex].text;
+  let password = document.getElementById('senha').value;
+
+    google.script.run.withSuccessHandler(function(output){
+      if(output == 'TRUE'){
+        document.getElementById('loginDisplay').style.display = 'none'
+        document.getElementById('dataDisplay').style.display = 'none'
+        document.getElementById('edicaoDisplay').style.display = 'block'
+      }else if(output == 'PROIBIDO'){
+        document.getElementById("senha").value = ""
+        $('#errorMessage').html('Você não tem autorização para acessar esta área. Por favor, informe a senha novamente e clique em Novos Registos.')        
+      }else if(output == 'FALSE'){
+        document.getElementById("senha").value = ""
+        $('#errorMessage').html('Senha incorreta. Por favor, tente novamente.')
+      }
+    }).checkLoginEdicao(username,password)
+  }
+
+//PREENCHER DADOS DO LOCALIZADOR SELECIONADO - CONCLUIR**
+  function fPreencherDadosAlteracao(){
+  let e = document.getElementById("idListaColabsPorFabrica")
+  let colabAlterar = e.options[e.selectedIndex].text
+  let dt = document.getElementById('dataAlterar').value
+  let dtAno = dt.substr(0,4)
+  let dtMes = dt.substr(5,2)
+  let dtDia = dt.substr(-2)
+  let localizadorInput = dtDia + '/' + dtMes + '/' + dtAno+colabAlterar
+
+    alert(localizadorInput)
+
+/*
+    google.script.run.withSuccessHandler(function(output){
+      if(output == 'TRUE'){
+        document.getElementById('loginDisplay').style.display = 'none'
+        document.getElementById('dataDisplay').style.display = 'block'
+        document.getElementById('edicaoDisplay').style.display = 'none'
+      }else if(output == 'FALSE'){
+        document.getElementById("senha").value = ""
+        $('#errorMessage').html('Senha incorreta. Por favor, tente novamente.')
+      }
+    }).preencherRegisto(localizadorInput)
+*/
+  }
+</script>
+
 
 <body>
 <!--Chamar CDN Google para jQuery-->
@@ -198,7 +229,7 @@ function decidirnome(){ //SKDFJSGNSLKMGPJGPMGDºFGPEJGNKFMGºDFGK+DOFGJFD
   <h1>LOGIN</h1>
   <p>Por favor, informe seu nome e senha.</p>
     <select id="mySelectList"></select> <br>                                 <!--lista dropdown colaboradores-->
-    <input type="password" id="senha" onkeydown = "if (event.keyCode == 13)
+    <input type="password" id="senha" onkeydown = "if (event.keyCode == 13)  <!--caixa texto senha + funcao para-->
         document.getElementById('btLogin').click()" /> <br>   <!--executar botao com tecla Enter-->                 
     <span id="errorMessage" style="color: red" ></span> <br>                 <!--msg de erro senha incorreta-->
 
@@ -212,16 +243,25 @@ function decidirnome(){ //SKDFJSGNSLKMGPJGPMGDºFGPEJGNKFMGºDFGK+DOFGJFD
   <h1>VISUALIZAÇÃO E ALTERAÇÃO DE REGISTO</h1>
   <p>Por favor, selecione a data e o colaborador cujo registo deseja visualizar e alterar.</p>  <br>
 
+  <label>Colaborador: </label>
   <select id="idListaColabsPorFabrica"></select> <br>
   
   <label for="dataAlterar">Data: </label>
   <input type="date" id="dataAlterar"> <br>
   
+  <input type="button" id='btPesquisar' value="Pesquisar" onclick="fPreencherDadosAlteracao()" />
 
-  <input type="button" id='btPesquisar' value="Pesquisar" onclick="xx()" /> 
-  
-  
-<!--XXXXXXXXXXXXXXXXXX esse aqui vai ser pra puxar BD do mês inteiro  <p id="elements">Tela Alteração</p>    -->
+  <!--TELA REGISTOS PREENCHIDOS----------------------->
+  <div style="display:none"  id="registosPreenchidosDisplay">
+    <label>FERIADO: </label>
+    <input list="listaFeriadoAlterar" id="idFeriadoAlterar"/>
+    <datalist id="listaFeriadoAlterar">
+        <option value="Sim">
+        <option value="Não">
+    </datalist>
+    <br>
+
+  </div>
 </div>
 
 
