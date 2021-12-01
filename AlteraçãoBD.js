@@ -60,7 +60,7 @@ function preencherRegisto(localizadorInput){
     //let dataAlterar = shBaseDados.getRange(linhaLocalizadorBD,1).getValue()
     //let nomeAlterar = shBaseDados.getRange(linhaLocalizadorBD,2).getValue()
     //let fabricaAlterar = shBaseDados.getRange(linhaLocalizadorBD,3).getValue()
-    //let feriadoAlterar = shBaseDados.getRange(linhaLocalizadorBD,4).getValue()
+    let feriadoAlterar = shBaseDados.getRange(linhaLocalizadorBD,4).getValue()
     let ausenciaAlterar = shBaseDados.getRange(linhaLocalizadorBD,5).getValue()
     let entradaAlterar = shBaseDados.getRange(linhaLocalizadorBD,6).getValue()
     //let saidaAlterar = shBaseDados.getRange(linhaLocalizadorBD,7).getValue()
@@ -122,4 +122,3 @@ function mostrarTabelaRegistros(){
     }
     return arryColab
 }
-

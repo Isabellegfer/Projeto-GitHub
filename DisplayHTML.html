@@ -1,13 +1,21 @@
 <!DOCTYPE html>
-<html lang="en-US">
+<html lang="en">
 <head>
   <?!= include('displayCSS'); ?>
   <base target="_top">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+  <title>Registos Muralha Frequente</title>
+
 </head>
 
 <script>
-  
 //TELA LOGIN ------------------------------------------------------------------------------
 //CHAMAR LISTA DE NOMES DOS COLABORADORES PARA DROPDOWN
   (function (){
@@ -199,22 +207,18 @@ function decidirnome(){ //SKDFJSGNSLKMGPJGPMGDºFGPEJGNKFMGºDFGK+DOFGJFD
   let dtAno = dt.substr(0,4)
   let dtMes = dt.substr(5,2)
   let dtDia = dt.substr(-2)
-  let localizadorInput = dtDia + '/' + dtMes + '/' + dtAno+colabAlterar
+  let localizadorInput = dtDia + '/' + dtMes + '/' + dtAno + colabAlterar
 
-    alert(localizadorInput)
-
-/*
     google.script.run.withSuccessHandler(function(output){
-      if(output == 'TRUE'){
-        document.getElementById('loginDisplay').style.display = 'none'
-        document.getElementById('dataDisplay').style.display = 'block'
-        document.getElementById('edicaoDisplay').style.display = 'none'
+      if(output == 'NovoRegisto'){
+        document.getElementById('edicaoDisplay').style.display = 'block'
+        document.getElementById('registosPreenchidosDisplay').style.display = 'block'
+        
       }else if(output == 'FALSE'){
         document.getElementById("senha").value = ""
         $('#errorMessage').html('Senha incorreta. Por favor, tente novamente.')
       }
     }).preencherRegisto(localizadorInput)
-*/
   }
 </script>
 
@@ -229,19 +233,19 @@ function decidirnome(){ //SKDFJSGNSLKMGPJGPMGDºFGPEJGNKFMGºDFGK+DOFGJFD
   <h1>LOGIN</h1>
   <p>Por favor, informe seu nome e senha.</p>
     <select id="mySelectList"></select> <br>                                 <!--lista dropdown colaboradores-->
-    <input type="password" id="senha" onkeydown = "if (event.keyCode == 13)
-        document.getElementById('btLogin').click()" /> <br>                
+    <input type="password" id="senha" onkeydown = "if (event.keyCode == 13)  <!--caixa texto senha + funcao para-->
+        document.getElementById('btLogin').click()" placeholder="Senha" /> <br>   <!--executar botao com tecla Enter-->                 
     <span id="errorMessage" style="color: red" ></span> <br>                 <!--msg de erro senha incorreta-->
 
-    <input type="button" id='btLogin' value="Novos Registos" onclick="loginUser()" /> 
-    <input type="button" id='btEditar' value="Editar Registos" onclick="fTelaEdicaoRegistos()" />
+    <input type="button" class="botaoModelo" id='btLogin' value="Novos Registos" onclick="loginUser()" /> 
+    <input type="button" class="botaoModelo" id='btEditar' value="Editar Registos" onclick="fTelaEdicaoRegistos()" />
 </div>
 
 
 <!--TELA DE VISUALIZAÇÃO E ALTERAÇÃO DE REGISTOS----------------------->
-<div style="display:none"  id="edicaoDisplay">
+<div style="display:none" id="edicaoDisplay">
   <h1>VISUALIZAÇÃO E ALTERAÇÃO DE REGISTO</h1>
-  <p>Por favor, selecione a data e o colaborador cujo registo deseja visualizar e alterar.</p>  <br>
+  <p>Selecione a data e o colaborador cujo registo deseja visualizar e alterar.</p>
 
   <label>Colaborador: </label>
   <select id="idListaColabsPorFabrica"></select> <br>
@@ -249,10 +253,10 @@ function decidirnome(){ //SKDFJSGNSLKMGPJGPMGDºFGPEJGNKFMGºDFGK+DOFGJFD
   <label for="dataAlterar">Data: </label>
   <input type="date" id="dataAlterar"> <br>
   
-  <input type="button" id='btPesquisar' value="Pesquisar" onclick="fPreencherDadosAlteracao()" />
+  <input type="button" class="botaoModelo" id='btPesquisar' value="Pesquisar" onclick="fPreencherDadosAlteracao()"/>
 
   <!--TELA REGISTOS PREENCHIDOS----------------------->
-  <div style="display:none"  id="registosPreenchidosDisplay">
+  <div style="display:none" id="registosPreenchidosDisplay">
     <label>FERIADO: </label>
     <input list="listaFeriadoAlterar" id="idFeriadoAlterar"/>
     <datalist id="listaFeriadoAlterar">
@@ -261,12 +265,14 @@ function decidirnome(){ //SKDFJSGNSLKMGPJGPMGDºFGPEJGNKFMGºDFGK+DOFGJFD
     </datalist>
     <br>
 
+    
+
   </div>
 </div>
 
 
 <!--TELA DE REGISTO INÍCIO----------------------->
-<div style="display:none"  id="dataDisplay">
+<div style="display:none" id="dataDisplay">
   <h1>REGISTO DE HORAS</h1>
   <p>Por favor, preencha o formulário abaixo com as informações de hoje.</p>
 
@@ -301,7 +307,7 @@ function decidirnome(){ //SKDFJSGNSLKMGPJGPMGDºFGPEJGNKFMGºDFGK+DOFGJFD
       <input type="time" id="intervalo" value="00:00"
       min="00:00" max="23:59" required>
     <br>
-    <input type="button" value="Confirmar" onclick="addRow()" />
+    <input type="button" class="botaoModelo" value="Confirmar" onclick="addRow()" />
   </div>
 
 <!--TELA DE REGISTO AUSÊNCIA----------------------->
@@ -320,7 +326,7 @@ function decidirnome(){ //SKDFJSGNSLKMGPJGPMGDºFGPEJGNKFMGºDFGK+DOFGJFD
           <option value="Isolamento Profilático">
       </datalist>
       <br>
-      <input type="button" value="Confirmar" onclick="addRow()" />
+      <input type="button" class="botaoModelo" value="Confirmar" onclick="addRow()" />
   </div>
 
 <!--TELA DE REGISTO UNIDADE E KILOGRAMA----------------------->
@@ -328,12 +334,15 @@ function decidirnome(){ //SKDFJSGNSLKMGPJGPMGDºFGPEJGNKFMGºDFGK+DOFGJFD
     <label>UNIDADE OU KILOGRAMA: </label>
       <input type="number" id="vUnidadeKg" min="0" required> <br>
 
-    <input type="button" value="Confirmar" onclick="addRow()" />
+    <input type="button" class="botaoModelo" value="Confirmar" onclick="addRow()" />
   </div>
 
   <span id="msgRegisto" style="color:red" ></span>
 
 </div>
   
+<!-- Option 1: Bootstrap Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
 </body>
 </html>

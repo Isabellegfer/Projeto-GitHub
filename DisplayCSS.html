@@ -1,76 +1,101 @@
 <style>
-    body{
-      height: 100vh;
-      background-image: linear-gradient(60deg,#A2D2FF,#193498);
-      background-repeat: no-repeat;
-      background-size: inherit;
-    }
-    h1{
-      margin: 10px 0px;
-    }
-    p{
-      margin: 6px 0px;
-    }
-    label{
-      margin: 6px 0px;
-    }
-    div#loginDisplay{
-      position: absolute;
-      top: 10%;
-      left: 5vh;
-      padding: 0vh 2vh 4vh;
-      width: 40%;
-      background-color: #eee;
-      border-radius: 7px;
-      box-shadow: 0 3px 3px rgba(0,0,0,0,12), 0 3px 2px rgba(0,0,0,0,24);
-    }
-    div#dataDisplay{
-      position: absolute;
-      top: 10%;
-      left: 5vh;
-      padding: 0vh 2vh 4vh;
-      width: 40%;
-      background-color: #eee;
-      border-radius: 7px;
-      box-shadow: 0 3px 3px rgba(0,0,0,0,12), 0 3px 2px rgba(0,0,0,0,24);
-    }
-    select{
-      font-size: 14px;
-      padding: 4px 0px;
-      margin: 1vh 0vh;
-      width: 25vw;
-      text-align: left;
-    }
-    select#listaFabricas{
-      font-size: 14px;
-      padding: 4px 0px;
-      margin: 1vh 0vh;
-      width: 15vw;
-      text-align: left;
-    }
-    input{
-      margin: 6px 0px;
-    }
-    input[type=password]{
-      font-size: 14px;
-      padding: 4px 0px;
-      width: 25vw;
-      text-align: left;
-    }
-    input[type=button]{
-      cursor: pointer;
-      font-size: 14px;
-      padding: 4px 30px;
-      width: 10vh;
-      transition: all 0.2s ease-in-out;
-    }
-    input#entrada{
-      margin: 0px 0px 0px 3px;
-    }
-    input#saida{
-      margin: 6px 0px 0px 30px;
-    }
-    input#intervalo{
-      margin: 6px 0px 0px 8px;
-    }
-    </style>
+  body{
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(to bottom,#193498,#A2D2FF);
+  }
+  h1{
+    margin: 10px 0px;
+  }
+  p{
+    margin: 6px 0px;
+  }
+  label{
+    margin: 6px 0px;
+  }
+  div#loginDisplay,
+  div#dataDisplay,
+  div#edicaoDisplay{
+    position: absolute;
+    top: 10%;
+    left: 5vh;
+    padding: 0vh 2vh 4vh;
+    width: 40%;
+    background-color: #eee;
+    border-radius: 7px;
+    box-shadow: 0 3px 3px rgba(0,0,0,0,12), 0 3px 2px rgba(0,0,0,0,24);
+  }
+  select{
+    font-size: 14px;
+    padding: 4px 0px;
+    margin: 1vh 0vh;
+    width: 25vw;
+    text-align: left;
+  }
+  select#listaFabricas{
+    font-size: 14px;
+    padding: 4px 0px;
+    margin: 1vh 0vh;
+    width: 15vw;
+    text-align: left;
+  }
+  input{
+    margin: 6px 0px;
+  }
+  input[type=password]{
+    font-size: 14px;
+    padding: 4px 0px;
+    width: 25vw;
+    text-align: left;
+  }
+  </*input[type=button]{
+    cursor: pointer;
+    font-size: 14px;
+    padding: 4px 30px;
+    width: 15vh;
+  }*/
+  
+  .botaoModelo {
+    background-color: #FFFFFF;
+    border: 2px solid rgb(209,213,219);
+    border-radius: .5rem;
+    box-sizing: border-box;
+    color: #111827;
+    font-size: .875rem;
+    font-weight: 600;
+    line-height: 1.25rem;
+    padding: .75rem 1rem;
+    text-align: center;
+    text-decoration: none #D1D5DB solid;
+    text-decoration-thickness: auto;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+  }
+  .botaoModelo:hover {
+    background-color: rgb(249,250,251);
+  }
+  .botaoModelo:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+  }
+  .botaoModelo:focus-visible {
+    box-shadow: none;
+  }
+  
+  input#entrada{
+    margin: 0px 0px 0px 3px;
+  }
+  input#saida{
+    margin: 6px 0px 0px 30px;
+  }
+  input#intervalo{
+    margin: 6px 0px 0px 8px;
+  }
+  </style>
