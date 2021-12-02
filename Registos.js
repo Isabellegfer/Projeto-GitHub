@@ -49,4 +49,3 @@ function addRecord(regData,regColaborador,regFabrica,regFeriado,regAusencia,regE
 
       shBaseDados.appendRow([regData,regColaborador,regFabrica,regFeriado,regAusencia,regEntrada,regSaida,regIntervalo,regUndKg,regLocalizador,emailUsuario,horaRegisto,nomeMes])
 }
-

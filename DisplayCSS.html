@@ -18,13 +18,20 @@
     margin: 6px 0px;
   }
   div#loginDisplay,
-  div#dataDisplay,
+  div#dataDisplay{
+    position: absolute;
+    top: 10%;
+    padding: 0vh 2vh 4vh;
+    width: 40%;
+    background-color: #eee;
+    border-radius: 7px;
+    box-shadow: 0 3px 3px rgba(0,0,0,0,12), 0 3px 2px rgba(0,0,0,0,24);
+  }
   div#edicaoDisplay{
     position: absolute;
     top: 10%;
-    left: 5vh;
     padding: 0vh 2vh 4vh;
-    width: 40%;
+    width: 70%;
     background-color: #eee;
     border-radius: 7px;
     box-shadow: 0 3px 3px rgba(0,0,0,0,12), 0 3px 2px rgba(0,0,0,0,24);
@@ -88,7 +95,6 @@
   .botaoModelo:focus-visible {
     box-shadow: none;
   }
-  
   input#entrada{
     margin: 0px 0px 0px 3px;
   }
@@ -97,5 +103,8 @@
   }
   input#intervalo{
     margin: 6px 0px 0px 8px;
+  }
+  .nav-link{
+    cursor:pointer;
   }
   </style>

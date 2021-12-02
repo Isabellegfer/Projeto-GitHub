@@ -1,11 +1,9 @@
 //ABRIR TELA HTML
 function doGet(request) {
-  return HtmlService.createTemplateFromFile('displayHTML')
-      .evaluate();
+  return HtmlService.createTemplateFromFile('displayHTML').evaluate();
 }
 function include(filename) {
-  return HtmlService.createHtmlOutputFromFile(filename)
-      .getContent();
+  return HtmlService.createHtmlOutputFromFile(filename).getContent();
 }
 
 //LISTAR COLABORADORES CADASTRADOS NA TELA DE LOGIN
@@ -31,10 +29,3 @@ function chamarListaFabricas(){
     Logger.log(err);
   }
 }
-
-
-
-
-
-
-
