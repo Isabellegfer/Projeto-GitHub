@@ -10,17 +10,22 @@
       <th scope='col'>#</th>
       <th scope='col'>First</th>
       <th scope='col'>Last</th>
-      <th scope='col'></th>
-      <th scope='col'></th>
+      <th scope='col'>Editar</th>
+      <th scope='col'>Excluir</th>
     </tr>
   </thead>
-  <tbody>
-    <tr>
-      <th scope='row'>1</th>
-      <th>João</th>
-      <th>Teste</th>
-      <th><button type="button" class="btn btn-outline-dark">Editar</button></th>
-      <th><button type="button" class="btn btn-outline-dark">Deletar</button></th>
-    </tr>
+
+  <tbody id='searchResults'>
   </tbody>
+
 </table>
+
+<template id='rowTemplate'>
+  <tr>
+    <th class="custID" scope='row'></th>
+    <td class="firstName"></td>
+    <td class="lastName"></td>
+    <td><button type="button" class="btn btn-outline-dark">Editar</button></td>
+    <td><button type="button" class="btn btn-outline-dark">Deletar</button></td>
+  </tr>
+</template>

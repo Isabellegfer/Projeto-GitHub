@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
 <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <?!= include('displayCSS'); ?>
-  <base target="_top">
+<?!= include('displayCSS'); ?>
+<base target="_top">
 
 <!-- Bootstrap CSS -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
@@ -15,220 +15,163 @@
 <script>
 //TELA LOGIN ------------------------------------------------------------------------------
 //CHAMAR LISTA DE NOMES DOS COLABORADORES PARA DROPDOWN
-  (function (){
-  google.script.run.withSuccessHandler(
-    function (selectList) {
-      let select = document.getElementById("mySelectList");
-      for( let i=0; i<selectList.length; i++ ) {
-        let option = document.createElement("option");
-        option.text = selectList[i][0];
-        select.add(option);
-      }
+(function (){
+google.script.run.withSuccessHandler(
+  function (selectList) {
+    let select = document.getElementById("mySelectList");
+    for( let i=0; i<selectList.length; i++ ) {
+      let option = document.createElement("option");
+      option.text = selectList[i][0];
+      select.add(option);
     }
-  ).getSelectList();
-  }());
+  }
+).getSelectList();
+}());
 
 //VALIDAR LOGIN DO USUÁRIO
-  function loginUser(){
-  let e = document.getElementById("mySelectList");
-  let username = e.options[e.selectedIndex].text;
-  let password = document.getElementById('senha').value;
-
-    google.script.run.withSuccessHandler(function(output){
-      if(output == 'TRUE'){
-        document.getElementById('loginDisplay').style.display = 'none'
-        document.getElementById('dataDisplay').style.display = 'block'
-        document.getElementById('edicaoDisplay').style.display = 'none'
-      }else if(output == 'FALSE'){
-        document.getElementById("senha").value = ""
-        $('#errorMessage').html('Senha incorreta. Por favor, tente novamente.')
-      }
-    }).checkLogin(username,password)
-  }
-
-
-//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-//MOSTRAR HISTÓRICO DE REGISTOS DA BASE DE DADOS --- AINDA FALTAAAAAAAAAAAAA
-function decidirnome(){ //SKDFJSGNSLKMGPJGPMGDºFGPEJGNKFMGºDFGK+DOFGJFD
+function loginUser(){
+let e = document.getElementById("mySelectList");
+let username = e.options[e.selectedIndex].text;
+let password = document.getElementById('senha').value;
 
   google.script.run.withSuccessHandler(function(output){
-
-    document.getElementById("elements").innerHTML = output
-
-  }).mostrarRegistros()
+    if(output == 'TRUE'){
+      document.getElementById('loginDisplay').style.display = 'none'
+      document.getElementById('dataDisplay').style.display = 'block'
+      document.getElementById('edicaoDisplay').style.display = 'none'
+    }else if(output == 'FALSE'){
+      document.getElementById("senha").value = ""
+      $('#errorMessage').html('Senha incorreta. Por favor, tente novamente.')
+    }
+  }).checkLogin(username,password)
 }
-//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 
 //TELA REGISTO------------------------------------------------------------------------------------------
 //CHAMAR LISTA DE FÁBRICAS PARA DROPDOWN - TELA DE REGISTOS
-  (function () {
-  google.script.run.withSuccessHandler(
-    function (selectList) {
-      let select = document.getElementById("listaFabricas");
-      for( let i=0; i<selectList.length; i++ ) {
-        let option = document.createElement("option");
-        option.text = selectList[i][0];
-        select.add(option);
-      }
+(function () {
+google.script.run.withSuccessHandler(
+  function (selectList) {
+    let select = document.getElementById("listaFabricas");
+    for( let i=0; i<selectList.length; i++ ) {
+      let option = document.createElement("option");
+      option.text = selectList[i][0];
+      select.add(option);
     }
-  ).chamarListaFabricas();
-  }());
+  }
+).chamarListaFabricas();
+}());
 
 //REGISTAR INFORMAÇÃO DO DIA
-  function addRow(){
-  let regData = new Date().toLocaleDateString()                     //dia registado
-  let e = document.getElementById("mySelectList");                  
-  let regColaborador = e.options[e.selectedIndex].text;             //nome colaborador
-  let f = document.getElementById("listaFabricas");                  
-  let regFabrica = f.options[f.selectedIndex].text;                 //fábrica
-  let regFeriado = $('input[name="feriadoR"]:checked').val()        //informar se é feriado ou não
-  let regAusencia = document.getElementById('motAusencia').value    //motivo ausencia, se houver
-  let regEntrada = document.getElementById('entrada').value         //hora entrada
-  let regSaida = document.getElementById('saida').value             //hora saida
-  let regIntervalo = document.getElementById('intervalo').value     //tempo de intervalo
-  let regUndKgcomPonto = document.getElementById('vUnidadeKg').value
-  let regUndKg = regUndKgcomPonto.replace(".", ",")
-  let regLocalizador = regData+regColaborador
+function addRow(){
+let regData = new Date().toLocaleDateString()                     //dia registado
+let e = document.getElementById("mySelectList");                  
+let regColaborador = e.options[e.selectedIndex].text;             //nome colaborador
+let f = document.getElementById("listaFabricas");                  
+let regFabrica = f.options[f.selectedIndex].text;                 //fábrica
+let regFeriado = $('input[name="feriadoR"]:checked').val()        //informar se é feriado ou não
+let regAusencia = document.getElementById('motAusencia').value    //motivo ausencia, se houver
+let regEntrada = document.getElementById('entrada').value         //hora entrada
+let regSaida = document.getElementById('saida').value             //hora saida
+let regIntervalo = document.getElementById('intervalo').value     //tempo de intervalo
+let regUndKgcomPonto = document.getElementById('vUnidadeKg').value
+let regUndKg = regUndKgcomPonto.replace(".", ",")
+let regLocalizador = regData+regColaborador
 
-  //validar Localizador
-  google.script.run.withSuccessHandler(function(output){
-    if(output == 'TRUE'){
-      document.getElementById("msgRegisto").style.color = 'red';
-      document.getElementById("msgRegisto").innerHTML = 'As informações desta data já haviam sido registadas.'
+//validar Localizador
+google.script.run.withSuccessHandler(function(output){
+  if(output == 'TRUE'){
+    document.getElementById("msgRegisto").style.color = 'red';
+    document.getElementById("msgRegisto").innerHTML = 'As informações desta data já haviam sido registadas.'
 
-    }else if(output == 'FALSE'){
-      //validar preenchimento fábrica
-      if(regFabrica==''){
-        document.getElementById("msgRegisto").innerHTML = 'É necessário selecionar a fábrica.'
+  }else if(output == 'FALSE'){
+    //validar preenchimento fábrica
+    if(regFabrica==''){
+      document.getElementById("msgRegisto").innerHTML = 'É necessário selecionar a fábrica.'
 
-      //validar preenchimento horários
-      }else if($('#telaHorarios').is(':visible') && (regEntrada=="00:00" || regSaida=="00:00")){
-        document.getElementById("msgRegisto").innerHTML = 'É necessário preencher horários de entrada, saída e intervalo do dia trabalhado.'
+    //validar preenchimento horários
+    }else if($('#telaHorarios').is(':visible') && (regEntrada=="00:00" || regSaida=="00:00")){
+      document.getElementById("msgRegisto").innerHTML = 'É necessário preencher horários de entrada, saída e intervalo do dia trabalhado.'
 
-      //validar preenchimento motido ausência   
-      }else if($('#telaAusencia').is(':visible') && regAusencia==''){
-        document.getElementById("msgRegisto").innerHTML = 'É necessário preencher o motivo da ausência.'
+    //validar preenchimento motido ausência   
+    }else if($('#telaAusencia').is(':visible') && regAusencia==''){
+      document.getElementById("msgRegisto").innerHTML = 'É necessário preencher o motivo da ausência.'
 
-      //validar preenchimento de valor de unidades ou kilogramas  
-      }else if($('#telaUnidadeKg').is(':visible') && (regUndKg=='' || regUndKg==0)){
-        document.getElementById("msgRegisto").innerHTML = 'É necessário preencher as unidades ou kilogramas.'
+    //validar preenchimento de valor de unidades ou kilogramas  
+    }else if($('#telaUnidadeKg').is(':visible') && (regUndKg=='' || regUndKg==0)){
+      document.getElementById("msgRegisto").innerHTML = 'É necessário preencher as unidades ou kilogramas.'
 
-      //efetuar registo de dados na data de hoje     
-      }else{
-        google.script.run.addRecord(regData,regColaborador,regFabrica,regFeriado,regAusencia,regEntrada,regSaida,regIntervalo,regUndKg,regLocalizador)
-      
-        document.getElementById("msgRegisto").style.color = 'green';
-        document.getElementById("msgRegisto").innerHTML = `Registo da data ${regData} efetuado com sucesso!`
-        }
+    //efetuar registo de dados na data de hoje     
+    }else{
+      google.script.run.addRecord(regData,regColaborador,regFabrica,regFeriado,regAusencia,regEntrada,regSaida,regIntervalo,regUndKg,regLocalizador)
+    
+      document.getElementById("msgRegisto").style.color = 'green';
+      document.getElementById("msgRegisto").innerHTML = `Registo da data ${regData} efetuado com sucesso!`
       }
-    }).verificarLocalizador(regLocalizador)
+    }
+  }).verificarLocalizador(regLocalizador)
 
-    //aguardar 2 segundos para chamar função de "Sumir com msg de confirmação"
-    setTimeout(textoInnerVazio, 6000);
-  }
+  //aguardar 2 segundos para chamar função de "Sumir com msg de confirmação"
+  setTimeout(textoInnerVazio, 6000);
+}
 
-  function textoInnerVazio() {
-      document.getElementById("msgRegisto").innerHTML = "";
-  }
+function textoInnerVazio() {
+    document.getElementById("msgRegisto").innerHTML = "";
+}
 
 //MOSTRAR OU OCULTAR TELAS "AUSÊNCIA" E "HORAS TRABALHADAS" no displayRegisto
-  function alternarTelas(x){
-    if(x==0){
-      document.getElementById("rdDiaTrabalhado").checked = true
-      document.getElementById("rdMotivoAusencia").checked = false
-      document.getElementById("rdUnidadeKg").checked = false
-      document.getElementById("telaHorarios").style.display = 'block'
-      document.getElementById("telaAusencia").style.display = 'none'
-      document.getElementById("telaUnidadeKg").style.display = 'none'
-    }else if(x==1){
-      document.getElementById("rdDiaTrabalhado").checked = false
-      document.getElementById("rdMotivoAusencia").checked = true
-      document.getElementById("rdUnidadeKg").checked = false
-      document.getElementById("telaHorarios").style.display = 'none'
-      document.getElementById("telaAusencia").style.display = 'block'
-      document.getElementById("telaUnidadeKg").style.display = 'none'
-    }else if(x==2){
-      document.getElementById("rdDiaTrabalhado").checked = false
-      document.getElementById("rdMotivoAusencia").checked = false
-      document.getElementById("rdUnidadeKg").checked = true
-      document.getElementById("telaHorarios").style.display = 'none'
-      document.getElementById("telaAusencia").style.display = 'none'
-      document.getElementById("telaUnidadeKg").style.display = 'block'
-    }
-    return
+function alternarTelas(x){
+  if(x==0){
+    document.getElementById("rdDiaTrabalhado").checked = true
+    document.getElementById("rdMotivoAusencia").checked = false
+    document.getElementById("rdUnidadeKg").checked = false
+    document.getElementById("telaHorarios").style.display = 'block'
+    document.getElementById("telaAusencia").style.display = 'none'
+    document.getElementById("telaUnidadeKg").style.display = 'none'
+  }else if(x==1){
+    document.getElementById("rdDiaTrabalhado").checked = false
+    document.getElementById("rdMotivoAusencia").checked = true
+    document.getElementById("rdUnidadeKg").checked = false
+    document.getElementById("telaHorarios").style.display = 'none'
+    document.getElementById("telaAusencia").style.display = 'block'
+    document.getElementById("telaUnidadeKg").style.display = 'none'
+  }else if(x==2){
+    document.getElementById("rdDiaTrabalhado").checked = false
+    document.getElementById("rdMotivoAusencia").checked = false
+    document.getElementById("rdUnidadeKg").checked = true
+    document.getElementById("telaHorarios").style.display = 'none'
+    document.getElementById("telaAusencia").style.display = 'none'
+    document.getElementById("telaUnidadeKg").style.display = 'block'
   }
-
-
-//TELA ALTERAÇÃO---------------------------------------------------------------------------------
-//CHAMAR LISTA DE NOMES DOS COLABORADORES PARA DROPDOWN - TELA DE ALTERAÇÃO DE REGISTOS
-  (function (){
-  google.script.run.withSuccessHandler(
-    function (selectList) {
-      let select = document.getElementById("idListaColabsPorFabrica");
-      for( let i=0; i<selectList.length; i++ ) {
-        let option = document.createElement("option");
-        option.text = selectList[i][0];
-        select.add(option);
-      }
-    }
-  ).fListaColabsPorFabrica();
-  }());
+  return
+}
 
 //VALIDAR LOGIN PARA TELA DE ALTERAÇÃO DE REGISTOS
-  function fTelaEdicaoRegistos(){
-  let e = document.getElementById("mySelectList");
-  let username = e.options[e.selectedIndex].text;
-  let password = document.getElementById('senha').value;
+function fTelaEdicaoRegistos(){
+let e = document.getElementById("mySelectList");
+let username = e.options[e.selectedIndex].text;
+let password = document.getElementById('senha').value;
 
-    google.script.run.withSuccessHandler(function(output){
-      if(output == 'TRUE'){
-        document.getElementById('loginDisplay').style.display = 'none'
-        document.getElementById('dataDisplay').style.display = 'none'
-        document.getElementById('edicaoDisplay').style.display = 'block'
-      }else if(output == 'PROIBIDO'){
-        document.getElementById("senha").value = ""
-        $('#errorMessage').html('Você não tem autorização para acessar esta área. Por favor, informe a senha novamente e clique em Novos Registos.')        
-      }else if(output == 'FALSE'){
-        document.getElementById("senha").value = ""
-        $('#errorMessage').html('Senha incorreta. Por favor, tente novamente.')
-      }
-    }).checkLoginEdicao(username,password)
-  }
+  google.script.run.withSuccessHandler(function(output){
+    if(output == 'TRUE'){
+      document.getElementById('loginDisplay').style.display = 'none'
+      document.getElementById('dataDisplay').style.display = 'none'
+      document.getElementById('edicaoDisplay').style.display = 'block'
+    }else if(output == 'PROIBIDO'){
+      document.getElementById("senha").value = ""
+      $('#errorMessage').html('Você não tem autorização para acessar esta área. Por favor, informe a senha novamente e clique em Novos Registos.')        
+    }else if(output == 'FALSE'){
+      document.getElementById("senha").value = ""
+      $('#errorMessage').html('Senha incorreta. Por favor, tente novamente.')
+    }
+  }).checkLoginEdicao(username,password)
+}
 
-//PREENCHER DADOS DO LOCALIZADOR SELECIONADO - CONCLUIR**
-  function fPreencherDadosAlteracao(){
-  let e = document.getElementById("idListaColabsPorFabrica")
-  let colabAlterar = e.options[e.selectedIndex].text
-  let dt = document.getElementById('dataAlterar').value
-  let dtAno = dt.substr(0,4)
-  let dtMes = dt.substr(5,2)
-  let dtDia = dt.substr(-2)
-  let localizadorInput = dtDia + '/' + dtMes + '/' + dtAno + colabAlterar
-
-    google.script.run.withSuccessHandler(function(output){
-      if(output == 'NovoRegisto'){
-        document.getElementById('edicaoDisplay').style.display = 'block'
-        document.getElementById('registosPreenchidosDisplay').style.display = 'block'
-        
-      }else if(output == 'FALSE'){
-        document.getElementById("senha").value = ""
-        $('#errorMessage').html('Senha incorreta. Por favor, tente novamente.')
-      }
-    }).preencherRegisto(localizadorInput)
-  }
 </script>
 
-
 <body>
-<!--Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-<!--Chamar CDN Google para jQuery-->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-
-
-<!--TELA DE LOGIN----------------------->
+<!--TELA DE LOGIN------------------------------------------------------------------------------------------>
 <div id="loginDisplay">
   <h1>LOGIN</h1>
   <p>Por favor, informe seu nome e senha.</p>
@@ -242,49 +185,28 @@ function decidirnome(){ //SKDFJSGNSLKMGPJGPMGDºFGPEJGNKFMGºDFGK+DOFGJFD
 </div>
 
 
-<!--TELA DE VISUALIZAÇÃO E ALTERAÇÃO DE REGISTOS----------------------->
+<!--TELA DE VISUALIZAÇÃO E ALTERAÇÃO DE REGISTOS---------------------------------------------------------->
 
 <div class='container' style="display:none" id="edicaoDisplay"> <!--container-->
-<!--menu de navegação-->
-<ul class="nav nav-tabs">
-  <li class="nav-item">
-    <div class="nav-link active" id='home-link'>Início</div>
-  </li>
-  <li class="nav-item">
-    <div class="nav-link" id='search-link'>Pesquisar</div>
-  </li>
-  <li class="nav-item">
-    <div class="nav-link" id='add-customer-link'>Adicionar</div>
-  </li>
-</ul>
+  <!--menu de navegação-->
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <div class="nav-link active" id='home-link'>Início</div>
+    </li>
+    <li class="nav-item">
+      <div class="nav-link" id='search-link'>Pesquisar</div>
+    </li>
+    <li class="nav-item">
+      <div class="nav-link" id='add-customer-link'>Adicionar</div>
+    </li>
+  </ul>
 
  <div id='app'></div>
 
-  <h1>VISUALIZAÇÃO E ALTERAÇÃO DE REGISTO</h1>
-  <p>Selecione a data e o colaborador cujo registo deseja visualizar e alterar.</p>
-
-  <label>Colaborador: </label>
-  <select id="idListaColabsPorFabrica"></select> <br>
-  
-  <label for="dataAlterar">Data: </label>
-  <input type="date" id="dataAlterar"> <br>
-  
-  <input type="button" class="botaoModelo" id='btPesquisar' value="Pesquisar" onclick="fPreencherDadosAlteracao()"/>
-
-  <!--TELA REGISTOS PREENCHIDOS----------------------->
-  <div style="display:none" id="registosPreenchidosDisplay">
-    <label>FERIADO: </label>
-    <input list="listaFeriadoAlterar" id="idFeriadoAlterar"/>
-    <datalist id="listaFeriadoAlterar">
-        <option value="Sim">
-        <option value="Não">
-    </datalist>
-    <br>
-
-  </div>
 </div> <!--container-->
 
-<!--TELA DE REGISTO INÍCIO----------------------->
+
+<!--TELA DE REGISTO INÍCIO------------------------------------------------------------------------------>
 <div style="display:none" id="dataDisplay">
   <h1>REGISTO DE HORAS</h1>
   <p>Por favor, preencha o formulário abaixo com as informações de hoje.</p>
@@ -352,32 +274,90 @@ function decidirnome(){ //SKDFJSGNSLKMGPJGPMGDºFGPEJGNKFMGºDFGK+DOFGJFD
 
   <span id="msgRegisto" style="color:red" ></span>
 </div>
-  
+
+<!--JavaScript Opcional  -->
+<!--Bootstrap Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<!--Chamar CDN Google para jQuery-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
 <script>
 //ALTERNAR ENTRE ABAS DO CONTAINER 'EDITAR'
-  function loadView(options){
-    var id = typeof options.id === 'undefined' ? 'app' : options.id
-    var cb = typeof options.callback === 'undefined' ? function(){} : options.callback
+let data
 
-    google.script.run.withSuccessHandler(function(html){
-      document.getElementById(id).innerHTML = html
-      typeof options.params === 'undefined' ? cb() : cb(options.params)
-    })[options.func]()
-  }
+function loadView(options){
+  var id = typeof options.id === 'undefined' ? 'app' : options.id
+  var cb = typeof options.callback === 'undefined' ? function(){} : options.callback
 
-  function loadSearchView(){
-    loadView({func:'loadSearchView'})
-  }
-  function loadAddCustomerView(){
-    loadView({func:'loadAddCustomersView'})
-  }
-  function loadEditCustomerView(){
-    loadView({func:'loadEditCustomersView'})
-  }
+  google.script.run.withSuccessHandler(function(html){
+    document.getElementById(id).innerHTML = html
+    typeof options.params === 'undefined' ? cb() : cb(options.params)
+  })[options.func]()
+}
 
-  document.getElementById('search-link').addEventListener('click',loadSearchView)
-  document.getElementById('add-customer-link').addEventListener('click',loadAddCustomerView)
-  document.getElementById('home-link').addEventListener('click',loadEditCustomerView)
+function setDataForSearch(){
+  google.script.run.withSuccessHandler(function(dataReturned){
+    data = dataReturned.slice()
+  }).getDataForSearch()
+}
+
+function search(){
+  let searchInput = document.getElementById('searchInput').value.toString().toLowerCase().trim()
+  let searchWords = searchInput.split(/\s+/)
+  let searchColumns = [1,2]
+  //and or
+
+  let resultsArray = searchInput === '' ? [] : data.filter(function(r){
+
+    return searchWords.every(function(word){
+      return searchColumns.some(function(colIndex){
+        return r[colIndex].toString().toLowerCase().indexOf(word) !== -1
+      })
+    })
+  })
+
+  let searchResultsBox = document.getElementById('searchResults')
+  let templateBox = document.getElementById('rowTemplate')
+  let template = templateBox.content
+
+  searchResultsBox.innerHTML = ''
+
+  resultsArray.forEach(function(r){
+    let tr = template.cloneNode(true)
+    let custIDColumn = tr.querySelector('.custID')
+    let firstNameColumn = tr.querySelector('.firstName')
+    let lastNameColumn = tr.querySelector('.lastName')
+
+    custIDColumn.textContent = r[0]
+    firstNameColumn.textContent = r[1]
+    lastNameColumn.textContent = r[2]
+    
+    searchResultsBox.appendChild(tr)
+  })
+}
+
+function loadSearchView(){
+  loadView({func:'loadSearchView', callback: setDataForSearch})
+}
+function loadAddCustomerView(){
+  loadView({func:'loadAddCustomersView'})
+}
+function loadEditCustomerView(){
+  loadView({func:'loadEditCustomersView'})
+}
+
+document.getElementById('search-link').addEventListener('click',loadSearchView)
+document.getElementById('add-customer-link').addEventListener('click',loadAddCustomerView)
+document.getElementById('home-link').addEventListener('click',loadEditCustomerView)
+
+function inputEventHandler(e){
+  if(e.target.matches('#searchInput')){
+    search()
+  }
+}
+
+document.getElementById('app').addEventListener('input',inputEventHandler)
 
 </script>
 
