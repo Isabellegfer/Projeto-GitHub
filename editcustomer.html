@@ -3,7 +3,7 @@
 <div class="edit-customer-form">
   <div class="form-group">
     <label for="customer-id">Customer ID</label>
-    <input type="text" class="form-control" id="customer-id">
+    <input type="text" class="form-control" id="customer-id" readonly>
   </div>
   <div class="form-group">
     <label for="first-name">First Name</label>
@@ -17,6 +17,10 @@
     <label for="phone-number">Phone Number</label>
     <input type="text" class="form-control" id="phone-number">
   </div>
-  <button class="btn btn-primary">Save</button>
-  <button class="btn btn-primary">Cancel Changes</button>
+  <button class="btn btn-primary" id="save-changes">Salvar</button>
+  <button class="btn btn-primary" id="cancel-changes">Cancelar Alterações</button>
+</div>
+
+<div class="alert alert-success invisible" id="save-success-message" role="alert">
+  Alteração realizada com sucesso.
 </div>

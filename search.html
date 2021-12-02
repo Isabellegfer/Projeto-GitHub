@@ -10,8 +10,8 @@
       <th scope='col'>#</th>
       <th scope='col'>First</th>
       <th scope='col'>Last</th>
-      <th scope='col'>Editar</th>
-      <th scope='col'>Excluir</th>
+      <th scope='col'></th>
+      <th scope='col'></th>
     </tr>
   </thead>
 
@@ -21,11 +21,20 @@
 </table>
 
 <template id='rowTemplate'>
-  <tr>
+  <tr class="result-box">
     <th class="custID" scope='row'></th>
     <td class="firstName"></td>
     <td class="lastName"></td>
-    <td><button type="button" class="btn btn-outline-dark">Editar</button></td>
-    <td><button type="button" class="btn btn-outline-dark">Deletar</button></td>
+    <td><button type="button" class="btn btn-outline-dark edit-button">Editar</button></td>
+    <td>
+      <div class="btn-group" role="group">
+        <button type="button" class="btn btn-danger delete-button d-none">Confirmar</button>
+        <button type="button" class="btn btn-outline-dark before-delete-button" data-button-state='delete'>Deletar</button>
+      </div>
+    </td>
   </tr>
 </template>
+
+
+
+
