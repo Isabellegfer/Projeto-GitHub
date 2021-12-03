@@ -173,8 +173,8 @@ let password = document.getElementById('senha').value;
 
 <!--TELA DE LOGIN------------------------------------------------------------------------------------------>
 <div id="loginDisplay">
-  <h1>LOGIN</h1>
-  <p>Por favor, informe seu nome e senha.</p>
+  <h2>LOGIN</h2>
+  <p class="my-1">Por favor, informe seu nome e senha.</p>
     <select id="mySelectList"></select> <br>
     <input type="password" id="senha" onkeydown = "if (event.keyCode == 13)
         document.getElementById('btLogin').click()" placeholder="Senha" /> <br>                
@@ -189,31 +189,34 @@ let password = document.getElementById('senha').value;
 
 <div class='container' style="display:none" id="edicaoDisplay"> <!--container-->
   <!--menu de navegação-->
-  <ul class="nav nav-tabs">
+<nav id="navigation" class="mb-3">
+  <ul class="nav nav-tabs main-nav">
     <li class="nav-item">
-      <div class="nav-link active" id='home-link'>Início</div>
-    </li>
-    <li class="nav-item">
-      <div class="nav-link" id='search-link'>Pesquisar</div>
+      <div class="nav-link active" id='search-link'>Pesquisar</div>
     </li>
     <li class="nav-item">
       <div class="nav-link" id='add-customer-link'>Adicionar</div>
     </li>
   </ul>
-
+</nav>
  <div id='app'></div>
+
+<div id='loading' class="d-flex justify-content-center align-middle invisible">
+  <div class="spinner-border" style="width: 2rem; height: 2rem;" role="status">
+  </div>
+</div>
 
 </div> <!--container-->
 
 
 <!--TELA DE REGISTO INÍCIO------------------------------------------------------------------------------>
 <div style="display:none" id="dataDisplay">
-  <h1>REGISTO DE HORAS</h1>
+  <h2>REGISTO DE HORAS</h2>
   <p>Por favor, preencha o formulário abaixo com as informações de hoje.</p>
-
+  
   <label>DATA REGISTO: <script> document.write(new Date().toLocaleDateString()); </script> </label> <br>
 
-  <p>Este dia é feriado? 
+  <p class="my-1">Este dia é feriado? 
     <input type="radio"  name="feriadoR" value="Sim">Sim
     <input type="radio"  name="feriadoR" value="Não" checked='checked' >Não
   </p>
@@ -221,11 +224,10 @@ let password = document.getElementById('senha').value;
   <label>FÁBRICA: </label>
     <select id="listaFabricas"></select>
   
-  <p>O que ocorreu neste dia:</p>
+  <p class="my-1">O que ocorreu neste dia:</p>
     <input type="radio" id="rdDiaTrabalhado" name="radioS" onclick="alternarTelas(0)" >Dia trabalhado
     <input type="radio" id="rdMotivoAusencia" name="radioS" onclick="alternarTelas(1)" >Ausência
     <input type="radio" id="rdUnidadeKg" name="radioS" onclick="alternarTelas(2)" >Unidade ou Kg
-  <br>
   <br>
 
 <!--TELA DE REGISTO HORÁRIOS----------------------->
@@ -242,7 +244,7 @@ let password = document.getElementById('senha').value;
       <input type="time" id="intervalo" value="00:00"
       min="00:00" max="23:59" required>
     <br>
-    <input type="button" class="botaoModelo" value="Confirmar" onclick="addRow()" />
+    <input type="button" class="botaoModelo mt-3" value="Confirmar" onclick="addRow()" />
   </div>
 
 <!--TELA DE REGISTO AUSÊNCIA----------------------->
@@ -261,7 +263,7 @@ let password = document.getElementById('senha').value;
           <option value="Isolamento Profilático">
       </datalist>
       <br>
-      <input type="button" class="botaoModelo" value="Confirmar" onclick="addRow()" />
+      <input type="button" class="botaoModelo mt-3" value="Confirmar" onclick="addRow()" />
   </div>
 
 <!--TELA DE REGISTO UNIDADE E KILOGRAMA----------------------->
@@ -269,7 +271,7 @@ let password = document.getElementById('senha').value;
     <label>UNIDADE OU KILOGRAMA: </label>
       <input type="number" id="vUnidadeKg" min="0" required> <br>
 
-    <input type="button" class="botaoModelo" value="Confirmar" onclick="addRow()" />
+    <input type="button" class="botaoModelo mt-3" value="Confirmar" onclick="addRow()" />
   </div>
 
   <span id="msgRegisto" style="color:red" ></span>
@@ -289,16 +291,22 @@ let data
 function loadView(options){
   var id = typeof options.id === 'undefined' ? 'app' : options.id
   var cb = typeof options.callback === 'undefined' ? function(){} : options.callback
-
+  loadingStart()
+  
   google.script.run.withSuccessHandler(function(html){
     document.getElementById(id).innerHTML = html
+
+    loadingEnd()
     typeof options.params === 'undefined' ? cb() : cb(options.params)
   })[options.func]()
 }
 
 function setDataForSearch(){
+  loadingStart()
   google.script.run.withSuccessHandler(function(dataReturned){
     data = dataReturned.slice()
+
+  loadingEnd()
   }).getDataForSearch()
 }
 
@@ -316,6 +324,9 @@ function search(){
       })
     })
   })
+
+  let recordCount = searchInput === '' ? '' : 'Total de Registos: ' + resultsArray.length
+  document.getElementById('searchCounter').textContent = recordCount
 
   let searchResultsBox = document.getElementById('searchResults')
   let templateBox = document.getElementById('rowTemplate')
@@ -355,26 +366,35 @@ function displayConfirmationDelete(e){
 
 function deleteCustomer(e){
   let custID = e.target.dataset.customerId
+  loadingStart()
+
   google.script.run.withSuccessHandler(function(){
     e.target.closest('.result-box').remove()
       let ids = data.map(function(r){return r[0].toString().toLowerCase() })
       let index = ids.indexOf(custID.toString().toLowerCase())
       
       data.splice(index,1)
+  
+  loadingEnd()
   }).deleteById(custID)
 }
 
 function afterEditViewLoads(params){
+  loadingStart()
+
   document.getElementById('customer-id').value = params.custID
   google.script.run.withSuccessHandler(function(customerInfo){
     document.getElementById('first-name').value = customerInfo.firstName
     document.getElementById('last-name').value = customerInfo.lastName
     document.getElementById('phone-number').value = customerInfo.phone
 
+  loadingEnd()
+
   }).getCustomerById(params.custID)
 }
 
 function editCustomer(){
+  loadingStart()
   let customerInfo = {}
   customerInfo.firstName = document.getElementById('first-name').value
   customerInfo.lastName = document.getElementById('last-name').value
@@ -383,6 +403,7 @@ function editCustomer(){
   let id = document.getElementById('customer-id').value
 
   google.script.run.withSuccessHandler(function(res){
+    loadingEnd()
     document.getElementById('save-success-message').classList.remove('invisible')
     setTimeout(function(){
       document.getElementById('save-success-message').classList.add('invisible')
@@ -391,19 +412,56 @@ function editCustomer(){
   }).editCustomerById(id,customerInfo)
 }
 
+function addCustomer(){
+  loadingStart()
+  let customerInfo = {}
+  customerInfo.firstName = document.getElementById('first-name').value
+  customerInfo.lastName = document.getElementById('last-name').value
+  customerInfo.phone = document.getElementById('phone-number').value
+
+  google.script.run.withSuccessHandler(function(){
+    document.getElementById('first-name').value = ''
+    document.getElementById('last-name').value = ''
+    document.getElementById('phone-number').value = ''
+
+    document.getElementById('save-success-message').classList.remove('invisible')
+    loadingEnd()
+    setTimeout(function(){
+      document.getElementById('save-success-message').classList.add('invisible')
+    },2000)
+
+
+  }).addCustomer(customerInfo)
+}
+
 function loadSearchView(){
   loadView({func:'loadSearchView', callback: setDataForSearch})
 }
 function loadAddCustomerView(){
   loadView({func:'loadAddCustomersView'})
 }
-function loadEditCustomerView(){
-  loadView({func:'loadEditCustomersView'})
+function loadEditCustomerView(e){
+    loadView({func: 'loadEditCustomersView',callback: afterEditViewLoads,params: {custID: e.target.dataset.customerId} })
+}
+
+function activeTabChange(e){
+  let navLinks = document.querySelectorAll('.main-nav .nav-link')
+  navLinks.forEach(function(linkEl){
+    linkEl.classList.remove('active')
+  })
+  e.target.classList.add('active')
+}
+
+function loadingStart(){
+  document.getElementById('loading').classList.remove('invisible')
+}
+
+function loadingEnd(){
+  document.getElementById('loading').classList.add('invisible')
 }
 
 document.getElementById('search-link').addEventListener('click',loadSearchView)
 document.getElementById('add-customer-link').addEventListener('click',loadAddCustomerView)
-document.getElementById('home-link').addEventListener('click',loadEditCustomerView)
 
 function inputEventHandler(e){
   if(e.target.matches('#searchInput')){
@@ -419,17 +477,29 @@ function clickEventHandler(e){
     displayConfirmationDelete(e)
   }
   if(e.target.matches('.edit-button')){
-    loadView({func: 'loadEditCustomersView',
-          callback: afterEditViewLoads,
-          params: {custID: e.target.dataset.customerId} })
+    loadEditCustomerView(e)
   }
   if(e.target.matches('#save-changes')){
     editCustomer()
+  }
+  if(e.target.matches('#cancel-changes')){
+    loadSearchView()
+  }
+  if(e.target.matches('#add-customer-button')){
+    addCustomer()
+  }
+}
+
+function navClickEventHandler(e){
+  if(e.target.matches('.nav-link')){
+    activeTabChange(e)
   }
 }
 
 document.getElementById('app').addEventListener('input',inputEventHandler)
 document.getElementById('app').addEventListener('click',clickEventHandler)
+document.getElementById('navigation').addEventListener('click',navClickEventHandler)
+document.addEventListener('DOMContentLoaded',loadSearchView)
 
 </script>
 

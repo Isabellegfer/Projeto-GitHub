@@ -57,3 +57,16 @@ function editCustomerById(id,customerInfo){
   return true
 }
 
+function addCustomer(customerInfo){
+  const ss = SpreadsheetApp.getActiveSpreadsheet()
+  const ws = ss.getSheetByName('BaseDados')
+  const uniqueIDs = ws.getRange(2,1,ws.getLastRow()-1,1).getValues()
+  let maxNum = 0
+  uniqueIDs.forEach(r => {
+    maxNum = r[0] > maxNum ? r[0] : maxNum
+  })
+  let newID = maxNum + 1
+
+  ws.appendRow([newID,customerInfo.firstName,customerInfo.lastName,customerInfo.phone])
+}
+
