@@ -18,7 +18,7 @@ function getDataForSearch(){
   const ss = SpreadsheetApp.getActiveSpreadsheet()
   const ws = ss.getSheetByName('BaseDados')
 
-  return ws.getRange(2,1,ws.getLastRow()-1,9).getDisplayValues()
+  return ws.getRange(2,1,ws.getLastRow()-1,10).getDisplayValues()
 }
 
 function deleteById(id){
@@ -39,7 +39,7 @@ function getCustomerById(id){
   const rowNumber = posIndex === -1 ? 0 : posIndex + 2
   const customerInfo = ws.getRange(rowNumber,1,1,4).getValues()[0]
 
-  return {custID: customerInfo[0], firstName: customerInfo[1], lastName: customerInfo[2], phone: customerInfo[3]}
+  return {custID: customerInfo[0], dataList: customerInfo[1], nomeList: customerInfo[2], fabricaList: customerInfo[3]}
 }
 
 function editCustomerById(id,customerInfo){
@@ -50,9 +50,9 @@ function editCustomerById(id,customerInfo){
   const rowNumber = posIndex === -1 ? 0 : posIndex + 2
 
   ws.getRange(rowNumber,2,1,3).setValues([[
-                                          customerInfo.firstName,
-                                          customerInfo.lastName,
-                                          customerInfo.phone
+                                          customerInfo.dataList,
+                                          customerInfo.nomeList,
+                                          customerInfo.fabricaList
                                          ]])
   return true
 }
@@ -68,10 +68,6 @@ function addCustomer(customerInfo){
   })
   let newID = maxNum + 1
 
-  ws.appendRow([newID,customerInfo.firstName,customerInfo.lastName,customerInfo.phone])
+  ws.appendRow([newID,customerInfo.dataList,customerInfo.nomeList,customerInfo.fabricaList])
   ws.getRange(ultimaLinha+1,2,1,3).setNumberFormat('@')
 }
-
-//////// APAGAR ///
-//  spreadsheet.getActiveRangeList().setNumberFormat('@')
-///////////

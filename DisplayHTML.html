@@ -333,16 +333,18 @@ function search(){
   resultsArray.forEach(function(r){
     let tr = template.cloneNode(true)
     let custIDColumn = tr.querySelector('.custID')
-    let firstNameColumn = tr.querySelector('.firstName')
-    let lastNameColumn = tr.querySelector('.lastName')
+    let dataListColumn = tr.querySelector('.dataList')
+    let nomeListColumn = tr.querySelector('.nomeList')
+    let fabricaListColumn = tr.querySelector('.fabricaList')
     let deleteButton = tr.querySelector('.delete-button')
     let editButton = tr.querySelector('.edit-button')
 
     custIDColumn.textContent = r[0]
     deleteButton.dataset.customerId = r[0]
     editButton.dataset.customerId = r[0]
-    firstNameColumn.textContent = r[1]
-    lastNameColumn.textContent = r[2]
+    dataListColumn.textContent = r[1]
+    nomeListColumn.textContent = r[2]
+    fabricaListColumn.textContent = r[3]
     
     searchResultsBox.appendChild(tr)
   })
@@ -378,18 +380,18 @@ function deleteCustomer(e){
 function afterEditViewLoads(params){
   document.getElementById('customer-id').value = params.custID
   google.script.run.withSuccessHandler(function(customerInfo){
-    document.getElementById('first-name').value = customerInfo.firstName
-    document.getElementById('last-name').value = customerInfo.lastName
-    document.getElementById('phone-number').value = customerInfo.phone
+    document.getElementById('data-list').value = customerInfo.dataList
+    document.getElementById('nome-list').value = customerInfo.nomeList
+    document.getElementById('fabrica-list').value = customerInfo.fabricaList
 
   }).getCustomerById(params.custID)
 }
 
 function editCustomer(){
   let customerInfo = {}
-  customerInfo.firstName = document.getElementById('first-name').value
-  customerInfo.lastName = document.getElementById('last-name').value
-  customerInfo.phone = document.getElementById('phone-number').value
+  customerInfo.dataList = document.getElementById('data-list').value
+  customerInfo.nomeList = document.getElementById('nome-list').value
+  customerInfo.fabricaList = document.getElementById('fabrica-list').value
 
   let id = document.getElementById('customer-id').value
 
@@ -405,14 +407,14 @@ function editCustomer(){
 function addCustomer(){
   loadingStart()
   let customerInfo = {}
-  customerInfo.firstName = document.getElementById('first-name').value
-  customerInfo.lastName = document.getElementById('last-name').value
-  customerInfo.phone = document.getElementById('phone-number').value
+  customerInfo.dataList = document.getElementById('data-list').value
+  customerInfo.nomeList = document.getElementById('nome-list').value
+  customerInfo.fabricaList = document.getElementById('fabrica-list').value
 
   google.script.run.withSuccessHandler(function(){
-    document.getElementById('first-name').value = ''
-    document.getElementById('last-name').value = ''
-    document.getElementById('phone-number').value = ''
+    document.getElementById('data-list').value = ''
+    document.getElementById('nome-list').value = ''
+    document.getElementById('fabrica-list').value = ''
 
     document.getElementById('save-success-message').classList.remove('invisible')
     loadingEnd()
