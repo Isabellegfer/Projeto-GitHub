@@ -336,6 +336,8 @@ function search(){
     let dataListColumn = tr.querySelector('.dataList')
     let nomeListColumn = tr.querySelector('.nomeList')
     let fabricaListColumn = tr.querySelector('.fabricaList')
+    let feriadoListColumn = tr.querySelector('.feriadoList')
+    let ausenciaListColumn = tr.querySelector('.ausenciaList')
     let deleteButton = tr.querySelector('.delete-button')
     let editButton = tr.querySelector('.edit-button')
 
@@ -345,6 +347,8 @@ function search(){
     dataListColumn.textContent = r[1]
     nomeListColumn.textContent = r[2]
     fabricaListColumn.textContent = r[3]
+    feriadoListColumn.textContent = r[4]
+    ausenciaListColumn.textContent = r[5]
     
     searchResultsBox.appendChild(tr)
   })
@@ -383,6 +387,8 @@ function afterEditViewLoads(params){
     document.getElementById('data-list').value = customerInfo.dataList
     document.getElementById('nome-list').value = customerInfo.nomeList
     document.getElementById('fabrica-list').value = customerInfo.fabricaList
+    document.getElementById('feriado-list').value = customerInfo.feriadoList
+    document.getElementById('ausencia-list').value = customerInfo.ausenciaList
 
   }).getCustomerById(params.custID)
 }
@@ -392,6 +398,8 @@ function editCustomer(){
   customerInfo.dataList = document.getElementById('data-list').value
   customerInfo.nomeList = document.getElementById('nome-list').value
   customerInfo.fabricaList = document.getElementById('fabrica-list').value
+  customerInfo.feriadoList = document.getElementById('feriado-list').value
+  customerInfo.ausenciaList = document.getElementById('ausencia-list').value
 
   let id = document.getElementById('customer-id').value
 
@@ -410,11 +418,15 @@ function addCustomer(){
   customerInfo.dataList = document.getElementById('data-list').value
   customerInfo.nomeList = document.getElementById('nome-list').value
   customerInfo.fabricaList = document.getElementById('fabrica-list').value
+  customerInfo.feriadoList = document.getElementById('feriado-list').value
+  customerInfo.ausenciaList = document.getElementById('ausencia-list').value
 
   google.script.run.withSuccessHandler(function(){
     document.getElementById('data-list').value = ''
     document.getElementById('nome-list').value = ''
     document.getElementById('fabrica-list').value = ''
+    document.getElementById('feriado-list').value = ''
+    document.getElementById('ausencia-list').value = ''
 
     document.getElementById('save-success-message').classList.remove('invisible')
     loadingEnd()
