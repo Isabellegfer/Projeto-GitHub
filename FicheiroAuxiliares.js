@@ -1,5 +1,5 @@
 function ordenarNomesColabs() {
-  SpreadsheetApp.getActiveSheet().getFilter().sort(1, true);
+  SpreadsheetApp.getActiveSheet().getFilter().sort(2, true);
 };
 
 function allSheets(){
@@ -39,7 +39,7 @@ function getCustomerById(id){
   const rowNumber = posIndex === -1 ? 0 : posIndex + 2
   const customerInfo = ws.getRange(rowNumber,1,1,4).getValues()[0]
 
-  return { custID:customerInfo[0], firstName:customerInfo[1], lastName:customerInfo[2], phone:customerInfo[3] }
+  return {custID: customerInfo[0], firstName: customerInfo[1], lastName: customerInfo[2], phone: customerInfo[3]}
 }
 
 function editCustomerById(id,customerInfo){
@@ -60,7 +60,8 @@ function editCustomerById(id,customerInfo){
 function addCustomer(customerInfo){
   const ss = SpreadsheetApp.getActiveSpreadsheet()
   const ws = ss.getSheetByName('BaseDados')
-  const uniqueIDs = ws.getRange(2,1,ws.getLastRow()-1,1).getValues()
+  const ultimaLinha = ws.getLastRow()
+  const uniqueIDs = ws.getRange(2,1,ultimaLinha-1,1).getValues()
   let maxNum = 0
   uniqueIDs.forEach(r => {
     maxNum = r[0] > maxNum ? r[0] : maxNum
@@ -68,5 +69,9 @@ function addCustomer(customerInfo){
   let newID = maxNum + 1
 
   ws.appendRow([newID,customerInfo.firstName,customerInfo.lastName,customerInfo.phone])
+  ws.getRange(ultimaLinha+1,2,1,3).setNumberFormat('@')
 }
 
+//////// APAGAR ///
+//  spreadsheet.getActiveRangeList().setNumberFormat('@')
+///////////
