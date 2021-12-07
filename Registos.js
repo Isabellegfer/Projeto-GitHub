@@ -56,5 +56,5 @@ function addRecord(regData,regColaborador,regFabrica,regFeriado,regAusencia,regE
   let nomeMes = month[d.getMonth()]
 
       shBaseDados.appendRow([regID,regData,regColaborador,regFabrica,regFeriado,regAusencia,regEntrada,regSaida,regIntervalo,regUndKg,regLocalizador,emailUsuario,horaRegisto,nomeMes])
-      shBaseDados.getRange(ultimaLinha+1,2,1,3).setNumberFormat('@')
+      shBaseDados.getRange(ultimaLinha+1,2,1,14).setNumberFormat('@')
 }

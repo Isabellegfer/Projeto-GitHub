@@ -37,9 +37,9 @@ function getCustomerById(id){
   const custIds = ws.getRange(2,1,ws.getLastRow()-1,1).getValues().map(r => r[0].toString().toLowerCase())
   const posIndex = custIds.indexOf(id.toString().toLowerCase())
   const rowNumber = posIndex === -1 ? 0 : posIndex + 2
-  const customerInfo = ws.getRange(rowNumber,1,1,6).getValues()[0]
+  const customerInfo = ws.getRange(rowNumber,1,1,10).getValues()[0]
 
-  return {custID: customerInfo[0], dataList: customerInfo[1], nomeList: customerInfo[2], fabricaList: customerInfo[3], feriadoList: customerInfo[4], ausenciaList: customerInfo[5]}
+  return {custID: customerInfo[0], dataList: customerInfo[1], nomeList: customerInfo[2], fabricaList: customerInfo[3], feriadoList: customerInfo[4], ausenciaList: customerInfo[5], entradaList: customerInfo[6], saidaList: customerInfo[7], intervaloList: customerInfo[8], pesoList: customerInfo[9]}
 }
 
 function editCustomerById(id,customerInfo){
@@ -49,12 +49,16 @@ function editCustomerById(id,customerInfo){
   const posIndex = custIds.indexOf(id.toString().toLowerCase())
   const rowNumber = posIndex === -1 ? 0 : posIndex + 2
 
-  ws.getRange(rowNumber,2,1,5).setValues([[
+  ws.getRange(rowNumber,2,1,9).setValues([[
                                           customerInfo.dataList,
                                           customerInfo.nomeList,
                                           customerInfo.fabricaList,
                                           customerInfo.feriadoList,
-                                          customerInfo.ausenciaList
+                                          customerInfo.ausenciaList,
+                                          customerInfo.entradaList,
+                                          customerInfo.saidaList,
+                                          customerInfo.intervaloList,
+                                          customerInfo.pesoList
                                          ]])
   return true
 }
@@ -70,6 +74,6 @@ function addCustomer(customerInfo){
   })
   let newID = maxNum + 1
 
-  ws.appendRow([newID,customerInfo.dataList,customerInfo.nomeList,customerInfo.fabricaList,customerInfo.feriadoList,customerInfo.ausenciaList])
-  ws.getRange(ultimaLinha+1,2,1,5).setNumberFormat('@')
+  ws.appendRow([newID,customerInfo.dataList,customerInfo.nomeList,customerInfo.fabricaList,customerInfo.feriadoList,customerInfo.ausenciaList,customerInfo.entradaList,customerInfo.saidaList,customerInfo.intervaloList,customerInfo.pesoList])
+  ws.getRange(ultimaLinha+1,2,1,13).setNumberFormat('@')
 }

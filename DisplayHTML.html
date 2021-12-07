@@ -281,7 +281,8 @@ let password = document.getElementById('senha').value;
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 <script>
-//ALTERNAR ENTRE ABAS DO CONTAINER 'EDITAR'
+////////////////////////// ALTERNAR ENTRE ABAS DO CONTAINER 'EDITAR' ////////////////////////////////////
+
 let data
 
 function loadView(options){
@@ -338,6 +339,10 @@ function search(){
     let fabricaListColumn = tr.querySelector('.fabricaList')
     let feriadoListColumn = tr.querySelector('.feriadoList')
     let ausenciaListColumn = tr.querySelector('.ausenciaList')
+    let entradaListColumn = tr.querySelector('.entradaList')
+    let saidaListColumn = tr.querySelector('.saidaList')
+    let intervaloListColumn = tr.querySelector('.intervaloList')
+    let pesoListColumn = tr.querySelector('.pesoList')
     let deleteButton = tr.querySelector('.delete-button')
     let editButton = tr.querySelector('.edit-button')
 
@@ -349,6 +354,10 @@ function search(){
     fabricaListColumn.textContent = r[3]
     feriadoListColumn.textContent = r[4]
     ausenciaListColumn.textContent = r[5]
+    entradaListColumn.textContent = r[6]
+    saidaListColumn.textContent = r[7]
+    intervaloListColumn.textContent = r[8]
+    pesoListColumn.textContent = r[9]
     
     searchResultsBox.appendChild(tr)
   })
@@ -389,6 +398,10 @@ function afterEditViewLoads(params){
     document.getElementById('fabrica-list').value = customerInfo.fabricaList
     document.getElementById('feriado-list').value = customerInfo.feriadoList
     document.getElementById('ausencia-list').value = customerInfo.ausenciaList
+    document.getElementById('entrada-list').value = customerInfo.entradaList
+    document.getElementById('saida-list').value = customerInfo.saidaList
+    document.getElementById('intervalo-list').value = customerInfo.intervaloList
+    document.getElementById('peso-list').value = customerInfo.pesoList
 
   }).getCustomerById(params.custID)
 }
@@ -400,6 +413,10 @@ function editCustomer(){
   customerInfo.fabricaList = document.getElementById('fabrica-list').value
   customerInfo.feriadoList = document.getElementById('feriado-list').value
   customerInfo.ausenciaList = document.getElementById('ausencia-list').value
+  customerInfo.entradaList = document.getElementById('entrada-list').value
+  customerInfo.saidaList = document.getElementById('saida-list').value
+  customerInfo.intervaloList = document.getElementById('intervalo-list').value
+  customerInfo.pesoList = document.getElementById('peso-list').value
 
   let id = document.getElementById('customer-id').value
 
@@ -420,6 +437,10 @@ function addCustomer(){
   customerInfo.fabricaList = document.getElementById('fabrica-list').value
   customerInfo.feriadoList = document.getElementById('feriado-list').value
   customerInfo.ausenciaList = document.getElementById('ausencia-list').value
+  customerInfo.entradaList = document.getElementById('entrada-list').value
+  customerInfo.saidaList = document.getElementById('saida-list').value
+  customerInfo.intervaloList = document.getElementById('intervalo-list').value
+  customerInfo.pesoList = document.getElementById('peso-list').value
 
   google.script.run.withSuccessHandler(function(){
     document.getElementById('data-list').value = ''
@@ -427,6 +448,10 @@ function addCustomer(){
     document.getElementById('fabrica-list').value = ''
     document.getElementById('feriado-list').value = ''
     document.getElementById('ausencia-list').value = ''
+    document.getElementById('entrada-list').value = ''
+    document.getElementById('saida-list').value = ''
+    document.getElementById('intervalo-list').value = ''
+    document.getElementById('peso-list').value = ''
 
     document.getElementById('save-success-message').classList.remove('invisible')
     loadingEnd()
